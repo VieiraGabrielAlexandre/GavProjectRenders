@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class ApiAuthController extends Controller
@@ -24,13 +26,25 @@ class ApiAuthController extends Controller
         ]);
     }
 
-    public function login()
+    public function login(LoginUserRequest $request)
     {
+        $payload = $request->all();
 
+        if (!Auth::attempt($payload)) {
+            return $this->error('Credentials not match', 401);
+        }
+
+        return $this->success([
+            'token' => auth()->user()->createToken('Token Login')->plainTextToken,
+        ]);
     }
 
     public function logout()
     {
+        auth()->user()->tokens()->delete();
 
+        return [
+            'message' => 'Tokens Revoked'
+        ];
     }
 }

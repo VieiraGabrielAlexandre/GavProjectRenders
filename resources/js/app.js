@@ -14,3 +14,7 @@ createApp({
     resolveComponent: name => require(`./Pages/${name}`).default,
   })
 }).use(plugin).mount(el)
+
+const routes = [
+  { path: '/home', component: Home }
+]

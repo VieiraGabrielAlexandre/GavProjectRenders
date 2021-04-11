@@ -29,9 +29,18 @@ export default {
     },
     methods:{
         loginUser(){
-            axios.post('/api/auth/login', this.form).then(function (response){
-                if(response.status == 200){
-                    this.$router.push({ name: "Home"});
+            axios.post('/api/auth/login', this.form).then(response => {
+                if(response.data.status == 'Success'){
+                    let config = {
+                        headers: {
+                            'Authorization': 'Bearer ' + response.data.data.token
+                        }
+                    }
+            
+                    axios.get('/api/me', config).then(response => {
+                        //trocar console por lógica para acessar login e exibir o nome
+                        console.log(response);
+                    })
                 }
             })
         }

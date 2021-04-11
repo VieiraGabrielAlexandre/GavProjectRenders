@@ -28,13 +28,13 @@ export default {
         }
     },
     methods:{
-         loginUser(){
-             axios.post('/api/login', this.form).then(() =>{
-                 this.$router.push({ name: "Dashboard"}); 
-             }).catch((error) =>{
-         this.errors = error.response.data.errors;
+        loginUser(){
+            axios.post('/api/auth/login', this.form).then(function (response){
+                if(response.status == 200){
+                    this.$router.push({ name: "Home"});
+                }
             })
-         }
+        }
     }
 }
 </script>

@@ -25,6 +25,10 @@ Route::post('/auth/login', [ApiAuthController::class, 'login']);
 
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/athenticated', function () {
+        return true;
+    });
+    
     Route::get('/me', function(Request $request) {
         return auth()->user();
     });
